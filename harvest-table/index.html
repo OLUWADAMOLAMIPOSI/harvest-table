@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Harvest Table | Family Restaurant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="brand">Harvest<span>Table</span></a>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="reservations.html">Reservations</a></li>
+        <li><a href="contact.html">Order &amp; Contact</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">Family owned since 2008</p>
+      <h1>Good food,<br />made for the table.</h1>
+      <p>Honest cooking from local ingredients, served in a room built for long meals and easy conversation. Come hungry, leave full.</p>
+      <div class="hero-actions">
+        <a href="reservations.html" class="btn btn-primary">Reserve a table</a>
+        <a href="menu.html" class="btn btn-outline">View the menu</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="hero-art-frame"></div>
+      <p class="hero-art-mark">Harvest Table<br />Est. 2008</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-header">
+      <p class="section-eyebrow">Why people come back</p>
+      <h2>A simple kind of hospitality</h2>
+      <p>Three things we never compromise on, meal after meal.</p>
+    </div>
+    <div class="highlight-grid">
+      <div class="highlight-card">
+        <div class="icon-mark">01</div>
+        <h3>Local ingredients</h3>
+        <p>We buy from farms within fifty miles and change the menu with the seasons.</p>
+      </div>
+      <div class="highlight-card">
+        <div class="icon-mark">02</div>
+        <h3>Cooked to order</h3>
+        <p>Nothing sits under a heat lamp. Every plate is started when you order it.</p>
+      </div>
+      <div class="highlight-card">
+        <div class="icon-mark">03</div>
+        <h3>Room for everyone</h3>
+        <p>High chairs, big tables, quiet corners. However your group shows up, we have a spot.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="wrap">
+    <div class="section-header">
+      <p class="section-eyebrow">A taste of the menu</p>
+      <h2>Some of our favorites</h2>
+      <p>A short look at what's on the table this season.</p>
+    </div>
+    <div class="menu-card-preview" id="home-menu-preview">
+      <!-- filled by JS below -->
+    </div>
+    <div style="text-align:center; margin-top:36px;">
+      <a href="menu.html" class="btn btn-outline">See the full menu</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-header">
+      <p class="section-eyebrow">Find us</p>
+      <h2>Visit Harvest Table</h2>
+    </div>
+    <div class="info-grid">
+      <div class="info-block">
+        <h4>Address</h4>
+        <p>214 Mill Road<br />Riverside, TX 75001</p>
+      </div>
+      <div class="info-block">
+        <h4>Hours</h4>
+        <p>Tue to Sun, 11am to 9pm<br />Closed Mondays</p>
+      </div>
+      <div class="info-block">
+        <h4>Contact</h4>
+        <p>(555) 312-0049<br />hello@harvesttable.example</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-brand">Harvest Table</p>
+        <p>A family restaurant built around good ingredients, slow cooking, and a room that feels like home.</p>
+      </div>
+      <div>
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="reservations.html">Reservations</a></li>
+          <li><a href="contact.html">Order &amp; Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Visit</h5>
+        <ul>
+          <li>214 Mill Road, Riverside, TX</li>
+          <li>(555) 312-0049</li>
+          <li>Tue to Sun, 11am to 9pm</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Harvest Table. All rights reserved. <a href="admin/login.html">Staff login</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  function renderHomeMenuPreview() {
+    const container = document.getElementById("home-menu-preview");
+    const items = getAvailableMenu().slice(0, 4);
+    container.innerHTML = "";
+    items.forEach(function (item) {
+      const line = document.createElement("div");
+      line.className = "menu-line";
+      line.innerHTML =
+        '<div>' +
+          '<div class="menu-line-name">' + item.name + '</div>' +
+          '<div class="menu-line-desc">' + item.description + '</div>' +
+        '</div>' +
+        '<div class="menu-line-price">$' + item.price.toFixed(2) + '</div>';
+      container.appendChild(line);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", renderHomeMenuPreview);
+</script>
+
+</body>
+</html>

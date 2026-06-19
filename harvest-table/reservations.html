@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reservations | Harvest Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="brand">Harvest<span>Table</span></a>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="reservations.html" class="active">Reservations</a></li>
+        <li><a href="contact.html">Order &amp; Contact</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<section class="page-banner">
+  <div class="wrap">
+    <p class="section-eyebrow">Book ahead</p>
+    <h1>Reserve a Table</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="form-card">
+
+      <div class="form-success" id="reservation-success">
+        Your table is requested. We will confirm by phone or email shortly.
+      </div>
+
+      <form id="reservation-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="res-name">Full name</label>
+            <input type="text" id="res-name" required />
+          </div>
+          <div class="form-group">
+            <label for="res-phone">Phone number</label>
+            <input type="tel" id="res-phone" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="res-email">Email address</label>
+          <input type="email" id="res-email" required />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="res-date">Date</label>
+            <input type="date" id="res-date" required />
+          </div>
+          <div class="form-group">
+            <label for="res-time">Time</label>
+            <input type="time" id="res-time" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="res-guests">Number of guests</label>
+          <select id="res-guests" required>
+            <option value="">Select party size</option>
+            <option value="1">1 guest</option>
+            <option value="2">2 guests</option>
+            <option value="3">3 guests</option>
+            <option value="4">4 guests</option>
+            <option value="5">5 guests</option>
+            <option value="6">6 guests</option>
+            <option value="7+">7 or more guests</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="res-notes">Notes for us (optional)</label>
+          <textarea id="res-notes" placeholder="Allergies, special occasion, seating preference"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Request reservation</button>
+        <p class="form-note">This confirms a request, not a guaranteed table. We will reach out to confirm.</p>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-brand">Harvest Table</p>
+        <p>A family restaurant built around good ingredients, slow cooking, and a room that feels like home.</p>
+      </div>
+      <div>
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="reservations.html">Reservations</a></li>
+          <li><a href="contact.html">Order &amp; Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Visit</h5>
+        <ul>
+          <li>214 Mill Road, Riverside, TX</li>
+          <li>(555) 312-0049</li>
+          <li>Tue to Sun, 11am to 9pm</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Harvest Table. All rights reserved. <a href="admin/login.html">Staff login</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  function setupReservationForm() {
+    const form = document.getElementById("reservation-form");
+    const successBox = document.getElementById("reservation-success");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const reservation = {
+        name: document.getElementById("res-name").value.trim(),
+        phone: document.getElementById("res-phone").value.trim(),
+        email: document.getElementById("res-email").value.trim(),
+        date: document.getElementById("res-date").value,
+        time: document.getElementById("res-time").value,
+        guests: document.getElementById("res-guests").value,
+        notes: document.getElementById("res-notes").value.trim()
+      };
+
+      addReservation(reservation);
+
+      successBox.classList.add("visible");
+      form.reset();
+      successBox.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", setupReservationForm);
+</script>
+
+</body>
+</html>

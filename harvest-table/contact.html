@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Order &amp; Contact | Harvest Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="brand">Harvest<span>Table</span></a>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="reservations.html">Reservations</a></li>
+        <li><a href="contact.html" class="active">Order &amp; Contact</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<section class="page-banner">
+  <div class="wrap">
+    <p class="section-eyebrow">Takeout and questions</p>
+    <h1>Order &amp; Contact</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-header">
+      <p class="section-eyebrow">Place an order</p>
+      <h2>Build your takeout order</h2>
+      <p>Pick what you would like, then send us your details. We will confirm and let you know when it's ready.</p>
+    </div>
+
+    <div class="order-builder">
+      <div class="order-menu-list" id="order-menu-list">
+        <!-- filled by JS below -->
+      </div>
+
+      <div class="order-summary">
+        <h3>Your order</h3>
+        <div id="order-summary-content">
+          <p class="order-summary-empty">Your order is empty. Add items from the menu.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="wrap">
+    <div class="section-header">
+      <p class="section-eyebrow">Send your order or a message</p>
+      <h2>Your details</h2>
+      <p>This form sends your order above, or just a question if you leave the order empty.</p>
+    </div>
+
+    <div class="form-card">
+
+      <div class="form-success" id="contact-success">
+        Thank you. We have received your message and will be in touch soon.
+      </div>
+
+      <form id="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contact-name">Full name</label>
+            <input type="text" id="contact-name" required />
+          </div>
+          <div class="form-group">
+            <label for="contact-phone">Phone number</label>
+            <input type="tel" id="contact-phone" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="contact-email">Email address</label>
+          <input type="email" id="contact-email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="contact-message">Message (optional if ordering above)</label>
+          <textarea id="contact-message" placeholder="Pickup time, questions, or anything else we should know"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Send</button>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-brand">Harvest Table</p>
+        <p>A family restaurant built around good ingredients, slow cooking, and a room that feels like home.</p>
+      </div>
+      <div>
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="reservations.html">Reservations</a></li>
+          <li><a href="contact.html">Order &amp; Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Visit</h5>
+        <ul>
+          <li>214 Mill Road, Riverside, TX</li>
+          <li>(555) 312-0049</li>
+          <li>Tue to Sun, 11am to 9pm</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Harvest Table. All rights reserved. <a href="admin/login.html">Staff login</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  let currentOrder = {};
+
+  function renderOrderMenuList() {
+    const container = document.getElementById("order-menu-list");
+    const items = getAvailableMenu();
+    container.innerHTML = "";
+
+    items.forEach(function (item) {
+      const row = document.createElement("div");
+      row.className = "order-menu-row";
+
+      const qty = currentOrder[item.id] ? currentOrder[item.id].qty : 0;
+
+      row.innerHTML =
+        '<div>' +
+          '<div class="order-menu-row-name">' + item.name + '</div>' +
+          '<div class="order-menu-row-price">$' + item.price.toFixed(2) + '</div>' +
+        '</div>' +
+        '<div class="qty-control">' +
+          '<button type="button" class="qty-btn" data-action="dec" data-id="' + item.id + '">-</button>' +
+          '<span class="qty-value" id="qty-' + item.id + '">' + qty + '</span>' +
+          '<button type="button" class="qty-btn" data-action="inc" data-id="' + item.id + '">+</button>' +
+        '</div>';
+
+      container.appendChild(row);
+    });
+
+    container.querySelectorAll(".qty-btn").forEach(function (button) {
+      button.addEventListener("click", function () {
+        const id = button.getAttribute("data-id");
+        const action = button.getAttribute("data-action");
+        const item = items.find(function (m) { return m.id === id; });
+        if (!item) return;
+
+        if (!currentOrder[id]) {
+          currentOrder[id] = { name: item.name, price: item.price, qty: 0 };
+        }
+
+        if (action === "inc") {
+          currentOrder[id].qty += 1;
+        } else if (action === "dec" && currentOrder[id].qty > 0) {
+          currentOrder[id].qty -= 1;
+        }
+
+        if (currentOrder[id].qty === 0) {
+          delete currentOrder[id];
+        }
+
+        document.getElementById("qty-" + id).textContent = currentOrder[id] ? currentOrder[id].qty : 0;
+        renderOrderSummary();
+      });
+    });
+  }
+
+  function renderOrderSummary() {
+    const container = document.getElementById("order-summary-content");
+    const ids = Object.keys(currentOrder);
+
+    if (ids.length === 0) {
+      container.innerHTML = '<p class="order-summary-empty">Your order is empty. Add items from the menu.</p>';
+      return;
+    }
+
+    let total = 0;
+    let html = "";
+
+    ids.forEach(function (id) {
+      const line = currentOrder[id];
+      const lineTotal = line.price * line.qty;
+      total += lineTotal;
+      html +=
+        '<div class="order-summary-row">' +
+          '<span>' + line.qty + ' x ' + line.name + '</span>' +
+          '<span>$' + lineTotal.toFixed(2) + '</span>' +
+        '</div>';
+    });
+
+    html += '<div class="order-summary-total"><span>Total</span><span>$' + total.toFixed(2) + '</span></div>';
+    container.innerHTML = html;
+  }
+
+  function setupContactForm() {
+    const form = document.getElementById("contact-form");
+    const successBox = document.getElementById("contact-success");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const orderIds = Object.keys(currentOrder);
+      const hasOrder = orderIds.length > 0;
+      const message = document.getElementById("contact-message").value.trim();
+
+      const contactDetails = {
+        name: document.getElementById("contact-name").value.trim(),
+        phone: document.getElementById("contact-phone").value.trim(),
+        email: document.getElementById("contact-email").value.trim(),
+        message: message
+      };
+
+      if (hasOrder) {
+        let total = 0;
+        const items = orderIds.map(function (id) {
+          const line = currentOrder[id];
+          total += line.price * line.qty;
+          return { name: line.name, qty: line.qty, price: line.price };
+        });
+
+        addOrder({
+          customerName: contactDetails.name,
+          phone: contactDetails.phone,
+          email: contactDetails.email,
+          items: items,
+          total: total,
+          notes: message
+        });
+      } else {
+        if (!message) {
+          alert("Please add items to your order or write a message before sending.");
+          return;
+        }
+        addMessage(contactDetails);
+      }
+
+      successBox.classList.add("visible");
+      successBox.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      form.reset();
+      currentOrder = {};
+      renderOrderMenuList();
+      renderOrderSummary();
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    renderOrderMenuList();
+    renderOrderSummary();
+    setupContactForm();
+  });
+</script>
+
+</body>
+</html>

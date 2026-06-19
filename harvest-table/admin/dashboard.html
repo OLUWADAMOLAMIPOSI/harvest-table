@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Dashboard | Harvest Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <aside class="admin-sidebar">
+    <p class="admin-brand">Harvest Table</p>
+    <p class="admin-brand-sub">Staff admin panel</p>
+
+    <ul class="admin-nav">
+      <li><button type="button" class="nav-btn active" data-panel="overview">Overview</button></li>
+      <li><button type="button" class="nav-btn" data-panel="menu">Menu</button></li>
+      <li><button type="button" class="nav-btn" data-panel="orders">Orders <span class="count-pill" id="orders-count">0</span></button></li>
+      <li><button type="button" class="nav-btn" data-panel="reservations">Reservations <span class="count-pill" id="reservations-count">0</span></button></li>
+      <li><button type="button" class="nav-btn" data-panel="messages">Messages <span class="count-pill" id="messages-count">0</span></button></li>
+    </ul>
+
+    <div class="sidebar-logout">
+      <button type="button" id="logout-btn">Log out</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+
+    <!-- Overview panel -->
+    <section class="admin-panel active" id="panel-overview">
+      <div class="admin-topbar">
+        <div>
+          <h1>Overview</h1>
+          <p>A quick look at today's activity.</p>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <p class="stat-label">Menu items</p>
+          <p class="stat-value" id="stat-menu-count">0</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-label">Open orders</p>
+          <p class="stat-value" id="stat-orders-count">0</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-label">Pending reservations</p>
+          <p class="stat-value" id="stat-reservations-count">0</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-label">Unread messages</p>
+          <p class="stat-value" id="stat-messages-count">0</p>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h2>Most recent orders</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="overview-recent-orders">
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Menu panel -->
+    <section class="admin-panel" id="panel-menu">
+      <div class="admin-topbar">
+        <div>
+          <h1>Menu</h1>
+          <p>Add, edit, or remove dishes from the public menu.</p>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h2 id="menu-form-title">Add a new item</h2>
+        <form id="menu-form">
+          <input type="hidden" id="menu-item-id" />
+          <div class="menu-form-grid">
+            <div class="form-group">
+              <label for="menu-item-name">Dish name</label>
+              <input type="text" id="menu-item-name" required />
+            </div>
+            <div class="form-group">
+              <label for="menu-item-category">Category</label>
+              <input type="text" id="menu-item-category" placeholder="Starters, Mains, Desserts, Drinks" required />
+            </div>
+            <div class="form-group">
+              <label for="menu-item-price">Price (USD)</label>
+              <input type="number" id="menu-item-price" min="0" step="0.01" required />
+            </div>
+            <div class="form-group">
+              <label for="menu-item-available">Availability</label>
+              <select id="menu-item-available">
+                <option value="true">Available on menu</option>
+                <option value="false">Hidden from menu</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label for="menu-item-description">Description</label>
+              <textarea id="menu-item-description" required></textarea>
+            </div>
+          </div>
+          <div class="row-actions" style="margin-top:6px;">
+            <button type="submit" class="btn btn-primary" style="width:auto;" id="menu-form-submit">Add item</button>
+            <button type="button" class="btn btn-outline" id="menu-form-cancel" style="display:none;">Cancel edit</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel-card">
+        <h2>Current menu</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Dish</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="menu-table-body">
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Orders panel -->
+    <section class="admin-panel" id="panel-orders">
+      <div class="admin-topbar">
+        <div>
+          <h1>Orders</h1>
+          <p>Takeout orders submitted from the website.</p>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Contact</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="orders-table-body">
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Reservations panel -->
+    <section class="admin-panel" id="panel-reservations">
+      <div class="admin-topbar">
+        <div>
+          <h1>Reservations</h1>
+          <p>Table requests submitted from the website.</p>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Guest</th>
+              <th>Contact</th>
+              <th>Date &amp; time</th>
+              <th>Guests</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="reservations-table-body">
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Messages panel -->
+    <section class="admin-panel" id="panel-messages">
+      <div class="admin-topbar">
+        <div>
+          <h1>Messages</h1>
+          <p>General questions sent through the contact form.</p>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <table>
+          <thead>
+            <tr>
+              <th>From</th>
+              <th>Contact</th>
+              <th>Message</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="messages-table-body">
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/admin.js"></script>
+</body>
+</html>
